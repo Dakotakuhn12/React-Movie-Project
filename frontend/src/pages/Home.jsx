@@ -1,75 +1,52 @@
-import MovieCard from "../components/MovieCard";
-import { useState, useEffect } from "react";
-import { searchMovies, getPopularMovies } from "../services/api";
+import GameCard from "../components/GameCard";
+import { useEffect, useState } from "react";
+import { getGames } from "../services/api";
 import "../css/Home.css";
 
 function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [movies, setMovies] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setloading] = useState(true);
+  const [games, setGames] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadPopularMovies = async () => {
+    const loadGames = async () => {
       try {
-        const popularMovies = await getPopularMovies();
-        setMovies(popularMovies);
+        const data = await getGames({ start: 0, end: 20 });
+        setGames(data.records);
       } catch (err) {
-        console.log(err);
-        setError("Failed to load movies...");
+        console.error(err);
+        setError("Unable to load games right now.");
       } finally {
-        setloading(false);
+        setLoading(false);
       }
     };
-    loadPopularMovies();
+
+    loadGames();
   }, []);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
-    if (loading) return;
-
-    setloading(true);
-    try {
-      const searchResults = await searchMovies(searchQuery);
-      setMovies(searchResults);
-      setError(null);
-    } catch (err) {
-      console.log(err);
-      setError("Failed to search movies...");
-    } finally {
-      setloading(false);
-    }
-    setSearchQuery("");
-  };
-
   return (
-    <div className="home">
-      <form onSubmit={handleSearch} className="search-form">
-        <input
-          type="text"
-          placeholder="Search for movies..."
-          className="search-input"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button type="submit" className="search-button">
-          Search
-        </button>
-      </form>
+    <section className="page page-home">
+      <div className="page-header">
+        <p className="eyebrow">Featured Library</p>
+        <h1>Discover 20 games from the IGDB collection.</h1>
+        <p className="lede">
+          Browse the latest set, search from the navbar, and open any title for
+          a full game breakdown with screenshots, links, and similar games.
+        </p>
+      </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error ? <div className="status-message error">{error}</div> : null}
 
       {loading ? (
-        <div className="loading">Loading...</div>
+        <div className="status-message">Loading games...</div>
       ) : (
-        <div className="movies-grid">
-          {movies.map((movie) => (
-            <MovieCard movie={movie} key={movie.id} />
+        <div className="games-grid">
+          {games.map((game) => (
+            <GameCard key={game.id} game={game} />
           ))}
         </div>
       )}
-    </div>
+    </section>
   );
 }
 

@@ -1,16 +1,21 @@
-const API_KEY = "762c2b2f2666c860440d3105f744134f";
-const BASE_URL = "https://api.themoviedb.org/3";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api";
 
-export const getPopularMovies = async () => {
-  const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`);
-  const data = await response.json();
-  return data.results;
-};
+async function request(path) {
+  const response = await fetch(`${API_BASE}${path}`);
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
+  }
+  return response.json();
+}
 
-export const searchMovies = async (query) => {
-  const response = await fetch(
-    `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`,
-  );
-  const data = await response.json();
-  return data.results;
-};
+export function getGames({ start = 0, end = 20 } = {}) {
+  return request(`/games?start=${start}&end=${end}`);
+}
+
+export function searchGames(query) {
+  return request(`/games?search=${encodeURIComponent(query)}&start=0&end=50`);
+}
+
+export function getGameById(id) {
+  return request(`/games/${id}`);
+}

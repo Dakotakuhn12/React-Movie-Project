@@ -1,28 +1,34 @@
 import "../css/Favorites.css";
-import { useMovieContext } from "../contexts/MovieContext";
-import MovieCard from "../components/MovieCard";
+import { useGameContext } from "../contexts/GameContext";
+import GameCard from "../components/GameCard";
 
-function Favorite() {
-  const { favorites } = useMovieContext();
+function Favorites() {
+  const { favorites } = useGameContext();
 
-  if (favorites) {
+  if (favorites.length === 0) {
     return (
-      <div className="favorites">
-        <h2>Your Favorites</h2>
-        <div className="movies-grid">
-          {favorites.map((movie) => (
-            <MovieCard movie={movie} key={movie.id} />
-          ))}
-        </div>
-      </div>
+      <section className="favorites-empty">
+        <h1>No favorite games yet</h1>
+        <p>
+          Save a few titles and they will show up here for quick access later.
+        </p>
+      </section>
     );
   }
 
   return (
-    <div className="favorites-empty">
-      <h2>No Favorite Movies Yet</h2>
-      <p>Start adding movies to your favorites and they wuill appear here!</p>
-    </div>
+    <section className="favorites-page">
+      <div className="page-header compact">
+        <p className="eyebrow">Favorites</p>
+        <h1>Your saved games</h1>
+      </div>
+      <div className="games-grid">
+        {favorites.map((game) => (
+          <GameCard key={game.id} game={game} />
+        ))}
+      </div>
+    </section>
   );
 }
-export default Favorite;
+
+export default Favorites;

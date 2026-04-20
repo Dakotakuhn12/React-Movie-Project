@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: react-video-game-project-2
+    env: node
+    rootDir: .
+    buildCommand: cd frontend && npm install && npm run build && cd .. && npm install
+    startCommand: npm start
+    envVars:
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        value: igdb

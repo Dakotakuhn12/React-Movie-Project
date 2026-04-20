@@ -1,0 +1,22 @@
+{
+  "name": "react-video-game-project-2",
+  "version": "1.0.0",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "dev:server": "node server.js",
+    "dev:client": "npm --prefix frontend run dev",
+    "dev:all": "concurrently \"npm run dev:server\" \"npm run dev:client\""
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.2",
+    "mysql2": "^3.15.3"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
