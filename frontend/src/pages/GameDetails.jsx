@@ -51,7 +51,9 @@ function GameDetails() {
   }
 
   if (error || !game) {
-    return <div className="status-message error">{error || "Game not found."}</div>;
+    return (
+      <div className="status-message error">{error || "Game not found."}</div>
+    );
   }
 
   const favorite = isFavorite(game.id);
@@ -69,20 +71,29 @@ function GameDetails() {
       <section className="detail-hero">
         <div className="detail-cover-frame">
           <img
-            className="detail-cover"
-            src={game.cover || "https://placehold.co/600x900/101828/F8FAFC?text=No+Cover"}
+            src={
+              game.cover
+                ? game.cover.replace("t_thumb", "t_1080p")
+                : "https://placehold.co/600x900/101828/F8FAFC?text=No+Cover"
+            }
             alt={game.name}
           />
         </div>
         <div className="detail-copy">
           <p className="eyebrow">Game Profile</p>
           <h1>{game.name}</h1>
-          <p className="detail-category">{game.category || "Unknown category"}</p>
+          <p className="detail-category">
+            {game.category || "Unknown category"}
+          </p>
           <p className="detail-summary">
             {game.summary || "No summary is available for this game yet."}
           </p>
           <div className="detail-actions">
-            <button type="button" className="favorite-toggle" onClick={toggleFavorite}>
+            <button
+              type="button"
+              className="favorite-toggle"
+              onClick={toggleFavorite}
+            >
               {favorite ? "Remove Favorite" : "Add Favorite"}
             </button>
             <Link className="secondary-link" to="/favorites">
@@ -142,7 +153,10 @@ function GameDetails() {
                 />
                 <div>
                   <h3>{similarGame.name}</h3>
-                  <p>{similarGame.platforms?.join(", ") || "Platform info unavailable"}</p>
+                  <p>
+                    {similarGame.platforms?.join(", ") ||
+                      "Platform info unavailable"}
+                  </p>
                 </div>
               </Link>
             ))}

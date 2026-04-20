@@ -19,7 +19,11 @@ function GameCard({ game }) {
     <Link className="game-card" to={`/games/${game.id}`}>
       <div className="game-card-media">
         <img
-          src={game.cover || "https://placehold.co/600x900/101828/F8FAFC?text=No+Cover"}
+          src={
+            game.cover
+              ? game.cover.replace("t_thumb", "t_1080p")
+              : "https://placehold.co/600x900/101828/F8FAFC?text=No+Cover"
+          }
           alt={game.name}
         />
         <button
